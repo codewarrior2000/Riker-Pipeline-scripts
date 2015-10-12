@@ -1,0 +1,14 @@
+time ../Riker_lane_level_processing.pl -IlluminaRunFolder /ifs/rcgroups/profile/Illumina/Basecalls/$2 -Config /ifs/rcgroups/profile/software/riker_2.1.0/Riker.profile.config > HiSeqrun_$2.out 
+
+sleep 7200
+
+time ../Riker_lane_level_processing.pl -IlluminaRunFolder /ifs/rcgroups/profile/Illumina/Basecalls/$3 -Config /ifs/rcgroups/profile/software/riker_2.1.0/Riker.profile.config > HiSeqrun_$3.out
+
+java -jar -Xmx2g /ifs/rcgroups/profile/software/VariantInfo.jar -c /ifs/rcgroups/profile/software/riker_2.1.0/Riker.profile.config
+
+java -jar -Xmx32g /ifs/rcgroups/profile/software/RUpositive.jar -config /ifs/rcgroups/profile/software/riker_2.1.0/Riker.profile.config -gold PL_NG2_240_8_26_2015 -plate $1 -path /ifs/rcgroups/profile
+
+java -jar  /ifs/rcgroups/profile/software/TranslocationsAnnotation-0.0.1-SNAPSHOT.one-jar.jar /ifs/rcgroups/profile/software/TranslocationAnnotation.properties
+
+java -jar -Xmx1024m /ifs/rcgroups/profile/lpc23/Mailer.jar Run#$2#$3#[$1]
+
